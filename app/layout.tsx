@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import Header from "@/components/Header";
 
 const roboto = Roboto({
   weight: '400',
@@ -23,10 +25,19 @@ export const metadata: Metadata = {
   description: "Track Your Expenses and Create a Budget",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <html lang="en" className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
-    </html>
-  );
+    <ClerkProvider>
+      <html lang="en" className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+        <body className={roboto.className}>
+          <Header />
+          <main className="container">{children}</main>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }
